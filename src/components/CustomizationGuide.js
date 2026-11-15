@@ -40,7 +40,7 @@ export function createCustomizationGuide() {
         </div>
 
         <div class="cremas-highlight">
-          <h4 class="cremas-title">Cremas de la Casa</h4>
+          <h4 class="cremas-title">Nuestras Cremas de la Casa</h4>
           <p class="cremas-subtitle">Acompaña tu pedido con nuestras salsas clásicas y de la casa</p>
           <div class="cremas-pills-wrap">
             ${cremasHtml}

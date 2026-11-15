@@ -7,7 +7,10 @@ export function createHero(onCategoryClick) {
   section.className = 'hero-section';
   
   section.innerHTML = `
-    <div class="hero-backdrop" aria-hidden="true"></div>
+    <div class="hero-backdrop" aria-hidden="true">
+      <img src="./images/hero-local.jpg" alt="" class="hero-bg-img" fetchpriority="high" />
+      <div class="hero-bg-overlay"></div>
+    </div>
     <div class="container hero-content">
       
       <!-- Distintivo Superior / Horario Oficial -->
@@ -29,15 +32,38 @@ export function createHero(onCategoryClick) {
         ${restaurantConfig.slogan}. Cortes selectos al carbón, hamburguesas a la parrilla, banquetes para compartir y repostería artesanal.
       </p>
 
-      <!-- Botones Principales de Acción Rápida -->
+      <!-- Botones Principales de Acción Rápida (Pills inspirados en la referencia con nivel cinco estrellas) -->
       <div class="hero-actions">
         <a href="#menu-nav" class="btn-primary">
           <span>${getIconSvg('book')}</span>
-          <span>EXPLORAR LA CARTA</span>
+          <span>VER LA CARTA</span>
         </a>
         <a href="#ubicacion" class="btn-secondary">
           <span>${getIconSvg('pin')}</span>
-          <span>UBÍCANOS</span>
+          <span>DÓNDE ENCONTRARNOS</span>
+        </a>
+        <a href="#redes" class="btn-secondary btn-pill-social">
+          <span>${getIconSvg('spark')}</span>
+          <span>SÍGUENOS</span>
+        </a>
+      </div>
+
+      <!-- Hallmarks de Alta Cocina / Pilares Gastronómicos -->
+      <div class="hallmarks-strip quick-strip">
+        <a href="#menu-nav" class="hallmark-item quick-strip-item">
+          <span class="hallmark-icon quick-strip-icon">${getIconSvg('grill', { width: 22, height: 22 })}</span>
+          <span class="hallmark-title quick-strip-title">Cortes a la Parrilla</span>
+          <span class="hallmark-desc quick-strip-desc">Sabor ahumado & técnica</span>
+        </a>
+        <a href="#menu-nav" class="hallmark-item quick-strip-item">
+          <span class="hallmark-icon quick-strip-icon">${getIconSvg('cocktail', { width: 22, height: 22 })}</span>
+          <span class="hallmark-title quick-strip-title">Coctelería de Autor</span>
+          <span class="hallmark-desc quick-strip-desc">Jarras de Sangría & combinados</span>
+        </a>
+        <a href="#banquetes" class="hallmark-item quick-strip-item">
+          <span class="hallmark-icon quick-strip-icon">${getIconSvg('crown', { width: 22, height: 22 })}</span>
+          <span class="hallmark-title quick-strip-title">Experiencia Exclusiva</span>
+          <span class="hallmark-desc quick-strip-desc">Servicio en mesa & banquetes</span>
         </a>
       </div>
 

@@ -75,6 +75,61 @@ export function createLocationSection() {
           ></iframe>
         </div>
       </div>
+
+      <!-- Galería de Atmósfera & Espacios Reales -->
+      <div class="atmosphere-gallery">
+        <div class="section-header" style="margin-top: 3.5rem; margin-bottom: 1.8rem;">
+          <span class="section-pretitle">NUESTRO ESPACIO</span>
+          <h3 class="section-title" style="font-size: 1.8rem;">El Ambiente Serendipity</h3>
+          <p class="section-subtitle">Diseñado para compartir momentos únicos entre fuego, música y confort.</p>
+        </div>
+
+        <div class="atmosphere-grid">
+          <div class="atmosphere-card">
+            <div class="atmosphere-img-wrap">
+              <img src="./images/local-dining.jpg" alt="Salón Principal y Comedor" class="atmosphere-img" loading="lazy" />
+              <div class="atmosphere-overlay"></div>
+            </div>
+            <div class="atmosphere-caption">
+              <h4 class="atmosphere-title">Salón Principal</h4>
+              <p class="atmosphere-desc">Diseño arquitectónico cálido, paneles acanalados y asientos en terciopelo.</p>
+            </div>
+          </div>
+
+          <div class="atmosphere-card">
+            <div class="atmosphere-img-wrap">
+              <img src="./images/local-neon.jpg" alt="Firma Neón Serendipity" class="atmosphere-img" loading="lazy" />
+              <div class="atmosphere-overlay"></div>
+            </div>
+            <div class="atmosphere-caption">
+              <h4 class="atmosphere-title">Firma Neón</h4>
+              <p class="atmosphere-desc">Iluminación tenue y el icónico neón que define nuestra identidad nocturna.</p>
+            </div>
+          </div>
+
+          <div class="atmosphere-card">
+            <div class="atmosphere-img-wrap">
+              <img src="./images/local-ambiance.jpg" alt="Atmósfera Urbana y Cálida" class="atmosphere-img" loading="lazy" />
+              <div class="atmosphere-overlay"></div>
+            </div>
+            <div class="atmosphere-caption">
+              <h4 class="atmosphere-title">Atmósfera & Estilo</h4>
+              <p class="atmosphere-desc">Lámparas de suspensión, mesas circulares y espacio ideal para grupos.</p>
+            </div>
+          </div>
+
+          <div class="atmosphere-card">
+            <div class="atmosphere-img-wrap">
+              <img src="./images/local-table-qr.jpg" alt="Experiencia en Mesa" class="atmosphere-img" loading="lazy" />
+              <div class="atmosphere-overlay"></div>
+            </div>
+            <div class="atmosphere-caption">
+              <h4 class="atmosphere-title">Experiencia en Mesa</h4>
+              <p class="atmosphere-desc">Atención al detalle en cada servicio para una velada gastronómica memorable.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   `;
 

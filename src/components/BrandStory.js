@@ -16,6 +16,11 @@ export function createBrandStory() {
   section.innerHTML = `
     <div class="container">
       <div class="story-card">
+        <div class="story-header-emblem">
+          <span class="story-crest">
+            ${getIconSvg('spark', { width: 24, height: 24, className: 'luxury-svg-icon' })}
+          </span>
+        </div>
         <span class="story-tagline">${story.tagline}</span>
         <h2 class="story-title">${story.title}</h2>
 
@@ -53,9 +58,11 @@ export function createBrandStory() {
           </div>
         </div>
 
-        <blockquote class="story-quote">
-          ${story.highlight}
-        </blockquote>
+        <div class="story-quote-container">
+          <blockquote class="story-quote">
+            ${story.highlight}
+          </blockquote>
+        </div>
       </div>
     </div>
   `;
