@@ -31,7 +31,7 @@ export function createBrandStory() {
         </div>
         
         <div class="story-body">
-          ${story.paragraphs.map(p => `<p class="story-paragraph">${p}</p>`).join('')}
+          <p class="story-paragraph">${story.paragraphs[0]}</p>
         </div>
 
         <div class="story-pillars-grid">

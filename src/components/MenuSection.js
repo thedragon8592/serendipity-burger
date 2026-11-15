@@ -58,6 +58,83 @@ export function createMenuSection(onItemClick) {
     // Mapa para asociar elementos con items
     const renderedItemMap = new Map();
 
+    // Vitrina destacada de Promos & Imperdibles al inicio de la carta
+    if ((filterCategory === 'all' || !filterCategory) && !query) {
+      const promoIds = [
+        'coctel-sangria-jarra-chica',
+        'coctel-sangria-jarra-grande',
+        'p-alitas-acevichada',
+        'h-serendipity',
+        'postre-crema-volteada',
+        'p-mega-parrilla'
+      ];
+      const promoItems = promoIds.map(id => menuItems.find(m => m.id === id)).filter(Boolean);
+
+      if (promoItems.length > 0) {
+        const promoShelf = document.createElement('section');
+        promoShelf.className = 'featured-promos-shelf';
+        promoShelf.id = 'promos-destacadas';
+
+        const promoCardsHtml = promoItems.map(item => {
+          renderedItemMap.set(item.id, { item, categoryName: 'Promociones' });
+
+          let badgeText = 'PROMO ESPECIAL';
+          if (item.id === 'coctel-sangria-jarra-chica') badgeText = 'PROMO CON ALCOHOL';
+          else if (item.id === 'coctel-sangria-jarra-grande') badgeText = 'IDEAL PARA COMPARTIR';
+          else if (item.id === 'p-alitas-acevichada') badgeText = 'FAVORITO CRIOLLO';
+          else if (item.id === 'h-serendipity') badgeText = 'SIGNATURE BURGER';
+          else if (item.id === 'postre-crema-volteada') badgeText = 'POSTRE ARTESANAL';
+          else if (item.id === 'p-mega-parrilla') badgeText = 'FESTIVAL A LA PARRILLA';
+
+          const formattedPrice = (typeof item.price === 'number') ? item.price.toFixed(2) : (item.priceNote || '');
+
+          return `
+            <article class="promo-card" data-item-id="${item.id}" tabindex="0" role="button" aria-label="${item.name}, ver detalle">
+              <div class="promo-card-top-badge">
+                <span class="promo-tag">${badgeText}</span>
+              </div>
+              <h4 class="promo-card-title">${item.name}</h4>
+              <p class="promo-card-desc">${item.description || ''}</p>
+              <div class="promo-card-bottom">
+                <span class="promo-card-price" aria-label="S/. ${formattedPrice}"><span class="currency">S/</span> <span class="amount">${formattedPrice}</span></span>
+                <span class="promo-card-action">Ver detalle →</span>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        promoShelf.innerHTML = `
+          <div class="promos-shelf-header">
+            <span class="promos-shelf-tag">IMPERDIBLES EN MESA</span>
+            <h3 class="promos-shelf-title">Promos & Favoritos de la Casa</h3>
+            <p class="promos-shelf-desc">Lo más pedido de nuestra carta listo para pedir sin dar vueltas.</p>
+          </div>
+          <div class="promos-carousel-track">
+            ${promoCardsHtml}
+          </div>
+        `;
+
+        container.appendChild(promoShelf);
+      }
+    }
+
+    // Botón para volver a ver todas las categorías si hay un filtro específico activo
+    if (filterCategory && filterCategory !== 'all' && !query) {
+      const activeBanner = document.createElement('div');
+      activeBanner.className = 'category-active-banner';
+      activeBanner.innerHTML = `
+        <button type="button" class="btn-back-all-cats">
+          <span>← Ver toda la carta</span>
+        </button>
+      `;
+      const backBtn = activeBanner.querySelector('.btn-back-all-cats');
+      backBtn.addEventListener('click', () => {
+        const allPill = document.querySelector('.category-pill[data-category="all"]');
+        if (allPill) allPill.click();
+      });
+      container.appendChild(activeBanner);
+    }
+
     categoriesToDisplay.forEach(category => {
       const catItems = filteredItems.filter(item => item.categoryId === category.id);
       if (catItems.length === 0) return;
@@ -152,8 +229,8 @@ export function createMenuSection(onItemClick) {
       container.appendChild(groupSection);
     });
 
-    // Delegar eventos de clic en las tarjetas
-    container.querySelectorAll('.menu-card').forEach(card => {
+    // Delegar eventos de clic en las tarjetas y promociones
+    container.querySelectorAll('.menu-card, .promo-card').forEach(card => {
       const clickHandler = () => {
         const itemId = card.getAttribute('data-item-id');
         const match = renderedItemMap.get(itemId);

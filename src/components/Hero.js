@@ -13,10 +13,20 @@ export function createHero(onCategoryClick) {
     </div>
     <div class="container hero-content">
       
-      <!-- Distintivo Superior / Horario Oficial -->
+      <!-- Distintivo Superior / Horario Oficial & Notificación Interactiva -->
       <div class="hero-top-badge">
         <span class="hero-badge-dot"></span>
         <span class="hero-badge-text">Abierto · ${restaurantConfig.location.schedule}</span>
+      </div>
+
+      <!-- Ticker Interactivo de Promociones en Vivo (Interacción dinámica no invasiva) -->
+      <div class="hero-promo-ticker" id="hero-promo-ticker" role="status" aria-live="polite">
+        <div class="ticker-pill">
+          <span class="ticker-dot"></span>
+          <span class="ticker-badge">PROMO DESTACADA</span>
+          <span class="ticker-msg" id="ticker-msg">Jarra Chica de Sangría a S/. 15.00 · Jarra Grande S/. 30.00</span>
+          <button type="button" class="ticker-cta" id="ticker-cta" aria-label="Ver detalles de la promo">Ver Promo</button>
+        </div>
       </div>
 
       <!-- Título de Marca y Pregunta Provocativa -->
@@ -153,6 +163,55 @@ export function createHero(onCategoryClick) {
       }
     });
   });
+
+  // Ticker interactivo de promociones y notificaciones auténticas
+  const livePromos = [
+    { badge: "PROMO DESTACADA", text: "Jarra Chica de Sangría a S/. 15.00 · Jarra Grande S/. 30.00", target: "cocteles" },
+    { badge: "ESPECIALIDAD", text: "Alitas Acevichadas con papas por S/. 18.50", target: "parrillas-banquetes" },
+    { badge: "REPOSTERÍA", text: "Todas las tortas a S/. 13.00 y Crema Volteada a S/. 12.00", target: "postres" },
+    { badge: "ADICIONALES", text: "Personaliza con huevo, tocino o queso desde +S/. 2.00", target: "adicionales" },
+    { badge: "PARA COMPARTIR", text: "Banquete Mega Parrilla para 4 personas a S/. 76.00", target: "parrillas-banquetes" }
+  ];
+
+  let currentPromoIdx = 0;
+  const tickerBadge = section.querySelector('.ticker-badge');
+  const tickerMsg = section.querySelector('#ticker-msg');
+  const tickerCta = section.querySelector('#ticker-cta');
+
+  if (tickerBadge && tickerMsg && tickerCta) {
+    const updateTicker = (idx) => {
+      const p = livePromos[idx];
+      tickerBadge.innerHTML = p.badge;
+      tickerMsg.innerHTML = p.text;
+      tickerCta.setAttribute('data-target', p.target);
+    };
+
+    updateTicker(0);
+
+    let promoTimer = setInterval(() => {
+      currentPromoIdx = (currentPromoIdx + 1) % livePromos.length;
+      updateTicker(currentPromoIdx);
+    }, 4500);
+
+    const tickerEl = section.querySelector('#hero-promo-ticker');
+    if (tickerEl) {
+      tickerEl.addEventListener('mouseenter', () => clearInterval(promoTimer));
+      tickerEl.addEventListener('mouseleave', () => {
+        promoTimer = setInterval(() => {
+          currentPromoIdx = (currentPromoIdx + 1) % livePromos.length;
+          updateTicker(currentPromoIdx);
+        }, 4500);
+      });
+    }
+
+    tickerCta.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetCat = tickerCta.getAttribute('data-target') || 'cocteles';
+      if (onCategoryClick) {
+        onCategoryClick(targetCat);
+      }
+    });
+  }
   
   return section;
 }

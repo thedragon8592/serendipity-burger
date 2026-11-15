@@ -30,13 +30,18 @@ export function createProductModal() {
         </div>
 
         <div class="modal-suggested-block" id="modal-suggested-block">
-          <span class="modal-sub-label">Adicionales disponibles</span>
-          <p class="modal-sub-hint">Puedes pedir al mozo agregar adicionales a tu gusto:</p>
+          <span class="modal-sub-label">Personaliza tu plato (Toca para calcular adicionales)</span>
+          <p class="modal-sub-hint">Selecciona adicionales para ver el cálculo estimado en mesa:</p>
           <div class="modal-additions-grid" id="modal-additions-grid"></div>
+          <div class="modal-calc-box" id="modal-calc-box" style="display: none;">
+            <span class="modal-calc-label">Total estimado con adicionales:</span>
+            <span class="modal-calc-amount" id="modal-calc-amount">S/. 0.00</span>
+            <p class="modal-calc-tip">Indica estos adicionales directamente a tu mozo al ordenar.</p>
+          </div>
         </div>
 
         <div class="modal-cremas-block" id="modal-cremas-block">
-          <span class="modal-sub-label">Cremas de la Casa</span>
+          <span class="modal-sub-label">Cremas de la Casa (Toca para elegir)</span>
           <div class="modal-cremas-pills" id="modal-cremas-pills"></div>
         </div>
       </div>
@@ -99,23 +104,63 @@ export function createProductModal() {
 
     // Mostrar adicionales para hamburguesas, parrillas y piqueos
     const isSavory = ['hamburguesas', 'parrillas-banquetes', 'piqueos'].includes(item.categoryId);
+    const calcBox = modalOverlay.querySelector('#modal-calc-box');
+    const calcAmount = modalOverlay.querySelector('#modal-calc-amount');
+
     if (isSavory) {
       additionsBlock.style.display = 'block';
+      if (calcBox) calcBox.style.display = 'none';
+
+      const basePrice = (typeof item.price === 'number') ? item.price : 0;
+      let selectedAdditionsTotal = 0;
+
       const sampleAdditions = burgerCustomizationData.categories[0].items.slice(0, 8);
-      additionsGrid.innerHTML = sampleAdditions.map(add => `
-        <div class="modal-add-item">
+      additionsGrid.innerHTML = sampleAdditions.map((add, idx) => `
+        <button type="button" class="modal-add-item" data-price="${add.price}" data-idx="${idx}" aria-pressed="false">
+          <span class="modal-add-check-wrap"><svg class="modal-add-check" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
           <span class="modal-add-name">${add.name}</span>
           <span class="modal-add-price">+S/. ${add.price.toFixed(2)}</span>
-        </div>
+        </button>
       `).join('');
+
+      const addButtons = additionsGrid.querySelectorAll('.modal-add-item');
+      addButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const isSelected = btn.classList.toggle('is-selected');
+          btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+          const addPrice = parseFloat(btn.getAttribute('data-price')) || 0;
+          
+          if (isSelected) {
+            selectedAdditionsTotal += addPrice;
+          } else {
+            selectedAdditionsTotal -= addPrice;
+          }
+
+          if (selectedAdditionsTotal > 0 && basePrice > 0) {
+            if (calcBox) calcBox.style.display = 'block';
+            if (calcAmount) calcAmount.innerHTML = `S/. ${(basePrice + selectedAdditionsTotal).toFixed(2)}`;
+          } else {
+            if (calcBox) calcBox.style.display = 'none';
+          }
+        });
+      });
 
       cremasBlock.style.display = 'block';
       cremasPills.innerHTML = burgerCustomizationData.cremas.map(c => `
-        <span class="crema-chip">${c.name}</span>
+        <button type="button" class="crema-chip" aria-pressed="false">${c.name}</button>
       `).join('');
+
+      const cremaChips = cremasPills.querySelectorAll('.crema-chip');
+      cremaChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          const active = chip.classList.toggle('is-selected');
+          chip.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+      });
     } else {
       additionsBlock.style.display = 'none';
       cremasBlock.style.display = 'none';
+      if (calcBox) calcBox.style.display = 'none';
     }
 
     modalOverlay.classList.add('active');
